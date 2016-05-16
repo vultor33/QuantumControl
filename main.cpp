@@ -22,7 +22,6 @@ int main()
 	params[6] = 5.90172270;
 	params[7] = 1.17501180;
 
-
 	vector<string> options(20);
 	options[0] = "gamess";
 	options[1] = "teste-gamess";
@@ -61,14 +60,16 @@ int main()
 	mol[2].z = 0.0;
 
 	string name = wri_.createInput(mol);
-
 	ReadQuantumOutput redQ_("gamess");
 	redQ_.activateDeactivateReadings("ionization", false);
 	redQ_.readOutput("build-na-1-li-20");
  
 
-
-
+	// ler as paradinhas no fomato xyz
+	//   converter a primeira minuscula
+	// contruir um input de otimizacao - rodar.
+	// pegar o resultado - rodar de novo.
+	// calcular frequencia - na0li2 - POSITIVA!
 
 
 	cout << "end" << endl;
@@ -113,23 +114,8 @@ options[16] = "na-ecp.txt";
 options[17] = "li-ecp.txt";
 options[18] = "li-ecp.txt";
 options[19] = "EndOfEcp";
-
 ReadQuantumOutput redQ_("gamess");
 redQ_.activateDeactivateReadings("ionization", false);
 redQ_.readOutput("build-na-1-li-20");
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 */
