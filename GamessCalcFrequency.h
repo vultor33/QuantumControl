@@ -14,6 +14,13 @@ public:
 private:
 	std::vector<CoordXYZ> readCoordinates(int naI, int liI);
 
+	void getLowestEnergyFromXyzFile(int naI, int liI);
+
+	double readXyzEnergy(std::string path, int naI, int liI);
+
+	void copyFile(std::string from, std::string to);
+
+
 };
 
 
