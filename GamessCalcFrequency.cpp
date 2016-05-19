@@ -7,6 +7,8 @@
 #include <iostream>
 
 #include "Coordstructs.h"
+#include "WriteQuantumInput.h"
+#include "ReadQuantumOutput.h"
 
 using namespace std;
 
@@ -60,24 +62,16 @@ GamessCalcFrequency::GamessCalcFrequency()
 				optionsOtim.push_back("auxFiles/li-ecp.txt");
 				optionsFreq.push_back("auxFiles/li-ecp.txt");
 			}
+			optionsOtim.push_back("EndOfEcp");
+			optionsFreq.push_back("EndOfEcp");
 
+			WriteQuantumInput writeInput_(optionsOtim);
+			string inputName = writeInput_.createInput(mol);
 
-
-			//options[11] = "na-base.txt";
-			//options[12] = "li-base.txt";
-			//options[13] = "li-base.txt";
-			//options[14] = "EndOfBasis";
-			//options[15] = "ActivateEcp";
-			//options[16] = "na-ecp.txt";
-			//options[17] = "li-ecp.txt";
-			//options[18] = "li-ecp.txt";
-			//options[19] = "EndOfEcp";
-
-
-			//setando o vector<string> options
-			// se for par - seta um
-			// se for inpar - o outro
-			// writeQuantum input e pronto.
+			//system(roda name)
+			// e assim vai
+			// read, roda de novo.
+			// frequency
 		}
 	}
 }
