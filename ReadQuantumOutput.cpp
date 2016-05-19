@@ -15,8 +15,8 @@ ReadQuantumOutput::ReadQuantumOutput(string type_in)
 	type = type_in;
 	coordinatesActivation = true;
 	energyActivation = true;
-	ionizationActivation = true;
-	dipoleActivation = true;
+	ionizationActivation = false;
+	dipoleActivation = false;
 	frequencyActivation = true;
 	if ((type == "mopac") || (type == "mopac2009"))
 	{
@@ -45,7 +45,8 @@ ReadQuantumOutput::ReadQuantumOutput(string type_in)
 		gamessGradientFlag = "UNITS ARE HARTREE/BOHR";
 		gamessIonizationFlag = "EIGENVECTORS";
 		gamessDipoleFlag = "ELECTROSTATIC MOMENTS";
-		gamessFrequency = "NAO DISPONIVEL";
+		gamessFrequency = "FREQUENCY:";
+		stopReadingFrequency = false;
 	}
 }
 
@@ -293,7 +294,17 @@ void ReadQuantumOutput::readFrequency(ifstream & quantumOut_)
 	}
 	if (type == "gamess")
 	{
-		// FALTA IMPLEMENTAR
+		while(getline(quantumOut_, auxline))
+		{
+			if (auxline.find(gamessFrequency) != string::npos)
+			{
+				string dum1, dum2;
+				stringstream convert;
+				convert << auxline;
+				convert >> dum1 >> dum2 >> firstFrequency;
+				break;
+			}
+		}
 	}
 }
 
@@ -404,7 +415,14 @@ bool ReadQuantumOutput::haveToReadFrequency(string auxline)
 	}
 	else if (type == "gamess")
 	{
-		return auxline.find(gamessFrequency) != string::npos;
+		if (stopReadingFrequency)
+			return false;
+
+		if (auxline.find(gamessFrequency) != string::npos)
+		{
+			stopReadingFrequency = true;
+			return true;
+		}	
 	}
 
 	return false;

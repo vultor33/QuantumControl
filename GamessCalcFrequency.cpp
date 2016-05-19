@@ -22,17 +22,13 @@ GamessCalcFrequency::GamessCalcFrequency()
 				continue;
 
 
-			//vector<CoordXYZ> mol = readCoordinates(naI, liI);
+			vector<CoordXYZ> mol = readCoordinates(naI, liI);
 			//setando o vector<string> options
 			// se for par - seta um
 			// se for inpar - o outro
 			// writeQuantum input e pronto.
-
-
 		}
 	}
-
-
 }
 
 vector<CoordXYZ> GamessCalcFrequency::readCoordinates(int naI, int liI)

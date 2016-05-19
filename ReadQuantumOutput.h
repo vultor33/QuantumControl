@@ -74,6 +74,7 @@ private:
 	std::string gamessDipoleFlag;
 	std::string gamessFrequency;
 	int gamessIonizationPos;
+	bool stopReadingFrequency;
 	double readnDoubles(std::string auxline, int nEigens);
 	//END OF GAMESS FLAGS
 
