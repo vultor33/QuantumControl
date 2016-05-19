@@ -12,12 +12,8 @@ using namespace std;
 
 int main()
 {
-//	GamessCalcFrequency gcf_;
 
-	ReadQuantumOutput rqo_("gamess");
-
-	rqo_.readOutput("na2li4-hess");
-
+	//	GamessCalcFrequency gcf_;
 
 	cout << "end" << endl;
 	cin.get();

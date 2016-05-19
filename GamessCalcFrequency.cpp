@@ -21,8 +21,59 @@ GamessCalcFrequency::GamessCalcFrequency()
 			if ((naI + liI < 5) || (naI + liI > 10))
 				continue;
 
-
 			vector<CoordXYZ> mol = readCoordinates(naI, liI);
+			vector<string> optionsOtim;
+			vector<string> optionsFreq;
+
+			if (((naI + liI) % 2) == 0)
+			{
+				optionsOtim = setGamessOptions(0);
+				optionsFreq = setGamessOptions(2);
+			}
+			else
+			{
+				optionsOtim = setGamessOptions(1);
+				optionsFreq = setGamessOptions(3);
+			}
+
+			for (int i = 0; i < naI; i++)
+			{
+				optionsOtim.push_back("auxFiles/na-base.txt");
+				optionsFreq.push_back("auxFiles/na-base.txt");
+			}
+			for (int i = 0; i < liI; i++)
+			{
+				optionsOtim.push_back("auxFiles/li-base.txt");
+				optionsFreq.push_back("auxFiles/li-base.txt");
+			}
+			optionsOtim.push_back("EndOfBasis");
+			optionsFreq.push_back("EndOfBasis");
+			optionsOtim.push_back("ActivateEcp");
+			optionsFreq.push_back("ActivateEcp");
+			for (int i = 0; i < naI; i++)
+			{
+				optionsOtim.push_back("auxFiles/na-ecp.txt");
+				optionsFreq.push_back("auxFiles/na-ecp.txt");
+			}
+			for (int i = 0; i < liI; i++)
+			{
+				optionsOtim.push_back("auxFiles/li-ecp.txt");
+				optionsFreq.push_back("auxFiles/li-ecp.txt");
+			}
+
+
+
+			//options[11] = "na-base.txt";
+			//options[12] = "li-base.txt";
+			//options[13] = "li-base.txt";
+			//options[14] = "EndOfBasis";
+			//options[15] = "ActivateEcp";
+			//options[16] = "na-ecp.txt";
+			//options[17] = "li-ecp.txt";
+			//options[18] = "li-ecp.txt";
+			//options[19] = "EndOfEcp";
+
+
 			//setando o vector<string> options
 			// se for par - seta um
 			// se for inpar - o outro
@@ -142,4 +193,30 @@ void GamessCalcFrequency::copyFile(string from, string to)
 
 	source.close();
 	dest.close();
+}
+
+vector<string> GamessCalcFrequency::setGamessOptions(int nOpt)
+{
+	vector<string> options(11);
+	options[0] = "gamess";
+	options[1] = "";
+	options[3] = " ISPHER=1 COORD=UNIQUE NOSYM=1 UNITS=ANGS PP=READ $END";
+	options[4] = " $GUESS GUESS=HUCKEL $END";
+	options[5] = " $SYSTEM MWORDS=40 MEMDDI=20  $END";
+	options[6] = " $SCF DIRSCF=.FALSE. $END";
+	options[7] = " $DATA";
+	options[8] = " titulo";
+	options[9] = "C1";
+	options[10] = "EndOfHeader";
+
+	if (nOpt == 0)
+		options[2] = " $CONTRL SCFTYP=RHF RUNTYP=OPTIMIZE EXETYP=RUN MPLEVL=2 MAXIT=200 MULT=1";
+	else if(nOpt == 1)
+		options[2] = " $CONTRL SCFTYP=ROHF RUNTYP=OPTIMIZE EXETYP=RUN MPLEVL=2 MAXIT=200 MULT=2";
+	else if(nOpt == 2)
+		options[2] = " $CONTRL SCFTYP=RHF RUNTYP=HESSIAN EXETYP=RUN MPLEVL=2 MAXIT=200 MULT=1";
+	else if(nOpt == 3)
+		options[2] = " $CONTRL SCFTYP=ROHF RUNTYP=HESSIAN EXETYP=RUN MPLEVL=2 MAXIT=200 MULT=2";
+
+	return options;
 }
