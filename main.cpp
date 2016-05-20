@@ -12,8 +12,10 @@ using namespace std;
 
 int main()
 {
-
-	//	GamessCalcFrequency gcf_;
+	string gamessPathVerno = "";
+	string scrPath = "";
+	string nProc = "8";
+	GamessCalcFrequency gcf_(gamessPathVerno, scrPath, nProc);
 
 	cout << "end" << endl;
 	cin.get();

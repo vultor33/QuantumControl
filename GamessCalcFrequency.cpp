@@ -14,8 +14,12 @@ using namespace std;
 
 GamessCalcFrequency::~GamessCalcFrequency() {}
 
-GamessCalcFrequency::GamessCalcFrequency()
+GamessCalcFrequency::GamessCalcFrequency(string gamessPathVerno, string scrPath, string nProc)
 {
+	ofstream freqFile_("frequenciesFiles.txt");
+	string exec = gamessPathVerno + "  " + nProc;
+	string removeScr = "rm  " + scrPath;
+
 	for (int naI = 0; naI < 10; naI++)
 	{
 		for (int liI = 1; liI < 10; liI++)
@@ -67,13 +71,32 @@ GamessCalcFrequency::GamessCalcFrequency()
 
 			WriteQuantumInput writeInput_(optionsOtim);
 			string inputName = writeInput_.createInput(mol);
+			system((removeScr + inputName + ".dat").c_str);
+			system((exec + inputName + ".inp" + "  >  " + inputName + ".out").c_str());
+			ReadQuantumOutput readO1_("gamess");
+			readO1_.readOutput(inputName);
+			vector<CoordXYZ> mol1 = readO1_.getCoordinates();
 
-			//system(roda name)
-			// e assim vai
-			// read, roda de novo.
-			// frequency
+			WriteQuantumInput writeInput2_(optionsOtim);
+			string inputName2 = writeInput2_.createInput(mol1, 1);
+			system((removeScr + inputName2 + ".dat").c_str);
+			system((exec + inputName2 + ".inp" + "  >  " + inputName2 + ".out").c_str());
+			ReadQuantumOutput readO2_("gamess");
+			readO2_.readOutput(inputName);
+			vector<CoordXYZ> mol2 = readO2_.getCoordinates();
+
+			WriteQuantumInput writeInput3_(optionsFreq);
+			string inputName3 = writeInput2_.createInput(mol2, 2);
+			system((removeScr + inputName3 + ".dat").c_str);
+			system((exec + inputName3 + ".inp" + "  >  " + inputName3 + ".out").c_str());
+			ReadQuantumOutput readO3_("gamess");
+			readO3_.readOutput(inputName);
+			double freq = readO3_.getFirstFrequency();
+
+			freqFile_ << "na:  " << naI << "  li:  " << liI << "  freq:  " << freq << endl;
 		}
 	}
+	freqFile_.close();
 }
 
 vector<CoordXYZ> GamessCalcFrequency::readCoordinates(int naI, int liI)

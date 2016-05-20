@@ -2,12 +2,13 @@
 #define GAMESSCALCFREQUENCY_H
 
 #include <vector>
+#include <string>
 #include "Coordstructs.h"
 
 class GamessCalcFrequency
 {
 public:
-	GamessCalcFrequency();
+	GamessCalcFrequency(std::string gamessPathVerno, std::string scrPath, std::string nProc);
 	
 	~GamessCalcFrequency();
 
