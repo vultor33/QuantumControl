@@ -74,7 +74,7 @@ void WriteQuantumInput::setInputProperties(vector<string> &options)
 				}
 			}
 		}
-	
+
 		if ((gamessEcpFiles.size() != gamessAtomBasisFiles.size())
 			&&
 			(gamessEcpFiles.size()!= 0))
@@ -198,113 +198,113 @@ void WriteQuantumInput::buildGamessInput(vector<CoordXYZ> &coordinates, string i
 
 int WriteQuantumInput::getChargeFromAtom(string atomName)
 {
-	if (atomName == "H")
+	if ((atomName == "H")||(atomName == "h"))
 		return 1;
-	else if (atomName == "He")
+	else if ((atomName == "He")||(atomName == "he")||(atomName == "HE"))
 		return 2;
-	else if (atomName == "Li")
+	else if ((atomName == "Li")||(atomName == "li")||(atomName == "LI"))
 		return 3;
-	else if (atomName == "Be")
+	else if ((atomName == "Be")||(atomName == "be")||(atomName == "BE"))
 		return 4;
-	else if (atomName == "B")
+	else if ((atomName == "B")||(atomName == "b"))
 		return 5;
-	else if (atomName == "C")
+	else if ((atomName == "C")||(atomName == "c"))
 		return 6;
-	else if (atomName == "N")
+	else if ((atomName == "N")||(atomName == "n"))
 		return 7;
-	else if (atomName == "O")
+	else if ((atomName == "O")||(atomName == "o"))
 		return 8;
-	else if (atomName == "F")
+	else if ((atomName == "F")||(atomName == "f"))
 		return 9;
-	else if (atomName == "Ne")
+	else if ((atomName == "Ne")||(atomName == "ne")||(atomName == "NE"))
 		return 10;
-	else if (atomName == "Na")
+	else if ((atomName == "Na")||(atomName == "na")||(atomName == "NA"))
 		return 11;
-	else if (atomName == "Mg")
+	else if ((atomName == "Mg")||(atomName == "mg")||(atomName == "MG"))
 		return 12;
-	else if (atomName == "Al")
+	else if ((atomName == "Al")||(atomName == "al")||(atomName == "AL"))
 		return 13;
-	else if (atomName == "Si")
+	else if ((atomName == "Si")||(atomName == "si")||(atomName == "SI"))
 		return 14;
-	else if (atomName == "P")
+	else if ((atomName == "P")||(atomName == "p"))
 		return 15;
-	else if (atomName == "S")
+	else if ((atomName == "S")||(atomName == "s"))
 		return 16;
-	else if (atomName == "Cl")
+	else if ((atomName == "Cl")||(atomName == "cl")||(atomName == "CL"))
 		return 17;
-	else if (atomName == "Ar")
+	else if ((atomName == "Ar")||(atomName == "ar")||(atomName == "AR"))
 		return 18;
-	else if (atomName == "K")
+	else if ((atomName == "K")||(atomName == "k"))
 		return 19;
-	else if (atomName == "Ca")
+	else if ((atomName == "Ca")||(atomName == "ca")||(atomName == "CA"))
 		return 20;
-	else if (atomName == "Sc")
+	else if ((atomName == "Sc")||(atomName == "sc")||(atomName == "SC"))
 		return 21;
-	else if (atomName == "Ti")
+	else if ((atomName == "Ti")||(atomName == "ti")||(atomName == "TI"))
 		return 22;
-	else if (atomName == "V")
+	else if ((atomName == "V")||(atomName == "v"))
 		return 23;
-	else if (atomName == "Cr")
+	else if ((atomName == "Cr")||(atomName == "cr")||(atomName == "CR"))
 		return 24;
-	else if (atomName == "Mn")
+	else if ((atomName == "Mn")||(atomName == "mn")||(atomName == "MN"))
 		return 25;
-	else if (atomName == "Fe")
+	else if ((atomName == "Fe")||(atomName == "fe")||(atomName == "FE"))
 		return 26;
-	else if (atomName == "Co")
+	else if ((atomName == "Co")||(atomName == "co")||(atomName == "CO"))
 		return 27;
-	else if (atomName == "Ni")
+	else if ((atomName == "Ni")||(atomName == "ni")||(atomName == "NI"))
 		return 28;
-	else if (atomName == "Cu")
+	else if ((atomName == "Cu")||(atomName == "cu")||(atomName == "CU"))
 		return 29;
-	else if (atomName == "Zn")
+	else if ((atomName == "Zn")||(atomName == "zn")||(atomName == "ZN"))
 		return 30;
-	else if (atomName == "Ga")
+	else if ((atomName == "Ga")||(atomName == "ga")||(atomName == "GA"))
 		return 31;
-	else if (atomName == "Ge")
+	else if ((atomName == "Ge")||(atomName == "ge")||(atomName == "GE"))
 		return 32;
-	else if (atomName == "As")
+	else if ((atomName == "As")||(atomName == "as")||(atomName == "AS"))
 		return 33;
-	else if (atomName == "Se")
+	else if ((atomName == "Se")||(atomName == "se")||(atomName == "SE"))
 		return 34;
-	else if (atomName == "Br")
+	else if ((atomName == "Br")||(atomName == "br")||(atomName == "BR"))
 		return 35;
-	else if (atomName == "Kr")
+	else if ((atomName == "Kr")||(atomName == "kr")||(atomName == "KR"))
 		return 36;
-	else if (atomName == "Rb")
+	else if ((atomName == "Rb")||(atomName == "rb")||(atomName == "RB"))
 		return 37;
-	else if (atomName == "Sr")
+	else if ((atomName == "Sr")||(atomName == "sr")||(atomName == "SR"))
 		return 38;
-	else if (atomName == "Y")
+	else if ((atomName == "Y")||(atomName == "y"))
 		return 39;
-	else if (atomName == "Zr")
+	else if ((atomName == "Zr")||(atomName == "zr")||(atomName == "ZR"))
 		return 40;
-	else if (atomName == "Nb")
+	else if ((atomName == "Nb")||(atomName == "nb")||(atomName == "NB"))
 		return 41;
-	else if (atomName == "Mo")
+	else if ((atomName == "Mo")||(atomName == "mo")||(atomName == "MO"))
 		return 42;
-	else if (atomName == "Tc")
+	else if ((atomName == "Tc")||(atomName == "tc")||(atomName == "TC"))
 		return 43;
-	else if (atomName == "Ru")
+	else if ((atomName == "Ru")||(atomName == "ru")||(atomName == "RU"))
 		return 44;
-	else if (atomName == "Rh")
+	else if ((atomName == "Rh")||(atomName == "rh")||(atomName == "RH"))
 		return 45;
-	else if (atomName == "Pd")
+	else if ((atomName == "Pd")||(atomName == "pd")||(atomName == "PD"))
 		return 46;
-	else if (atomName == "Ag")
+	else if ((atomName == "Ag")||(atomName == "ag")||(atomName == "AG"))
 		return 47;
-	else if (atomName == "Cd")
+	else if ((atomName == "Cd")||(atomName == "cd")||(atomName == "CD"))
 		return 48;
-	else if (atomName == "In")
+	else if ((atomName == "In")||(atomName == "in")||(atomName == "IN"))
 		return 49;
-	else if (atomName == "Sn")
+	else if ((atomName == "Sn")||(atomName == "sn")||(atomName == "SN"))
 		return 50;
-	else if (atomName == "Sb")
+	else if ((atomName == "Sb")||(atomName == "sb")||(atomName == "SB"))
 		return 51;
-	else if (atomName == "Te")
+	else if ((atomName == "Te")||(atomName == "te")||(atomName == "TE"))
 		return 52;
-	else if (atomName == "I")
+	else if ((atomName == "I")||(atomName == "i"))
 		return 53;
-	else if (atomName == "Xe")
+	else if ((atomName == "Xe")||(atomName == "xe")||(atomName == "XE"))
 		return 54;
 	else
 	{

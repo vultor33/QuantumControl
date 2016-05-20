@@ -18,6 +18,7 @@ GamessCalcFrequency::GamessCalcFrequency(string gamessPath, string scrPath, stri
 {
 	ofstream freqFile_("frequenciesFiles.txt");
 	string removeScr = "rm  " + scrPath;
+	bool ecpFlag;
 
 	for (int naI = 0; naI < 10; naI++)
 	{
@@ -26,23 +27,20 @@ GamessCalcFrequency::GamessCalcFrequency(string gamessPath, string scrPath, stri
 			if ((naI + liI < 5) || (naI + liI > 10))
 				continue;
 
-			cout << "estou aqui  " << naI << "  " << liI << endl;
-
+			ecpFlag = (naI != 0);
 			vector<CoordXYZ> mol = readCoordinates(naI, liI);
-			cout << "leu coordenadas" << endl;
-
 			vector<string> optionsOtim;
 			vector<string> optionsFreq;
 
 			if (((naI + liI) % 2) == 0)
 			{
-				optionsOtim = setGamessOptions(0);
-				optionsFreq = setGamessOptions(2);
+				optionsOtim = setGamessOptions(0,ecpFlag);
+				optionsFreq = setGamessOptions(2,ecpFlag);
 			}
 			else
 			{
-				optionsOtim = setGamessOptions(1);
-				optionsFreq = setGamessOptions(3);
+				optionsOtim = setGamessOptions(1,ecpFlag);
+				optionsFreq = setGamessOptions(3,ecpFlag);
 			}
 
 			for (int i = 0; i < naI; i++)
@@ -98,7 +96,7 @@ GamessCalcFrequency::GamessCalcFrequency(string gamessPath, string scrPath, stri
 			vector<CoordXYZ> mol2 = readO2_.getCoordinates();
 
 			WriteQuantumInput writeInput3_(optionsFreq);
-			string inputName3 = writeInput2_.createInput(mol2, 2);
+			string inputName3 = writeInput3_.createInput(mol2, 2);
 			system((removeScr + inputName3 + ".dat").c_str());
 			system((gamessPath + inputName3 + ".inp" + " 00 " + nProc + "  >  " + inputName3 + ".out").c_str());
 			ReadQuantumOutput readO3_("gamess");
@@ -227,12 +225,11 @@ void GamessCalcFrequency::copyFile(string from, string to)
 	dest.close();
 }
 
-vector<string> GamessCalcFrequency::setGamessOptions(int nOpt)
+vector<string> GamessCalcFrequency::setGamessOptions(int nOpt, bool ecpFlag)
 {
 	vector<string> options(11);
 	options[0] = "gamess";
 	options[1] = "";
-	options[3] = " ISPHER=1 COORD=UNIQUE NOSYM=1 UNITS=ANGS PP=READ $END";
 	options[4] = " $GUESS GUESS=HUCKEL $END";
 	options[5] = " $SYSTEM MWORDS=40 MEMDDI=20  $END";
 	options[6] = " $SCF DIRSCF=.FALSE. $END";
@@ -240,6 +237,11 @@ vector<string> GamessCalcFrequency::setGamessOptions(int nOpt)
 	options[8] = " titulo";
 	options[9] = "C1";
 	options[10] = "EndOfHeader";
+
+	if(ecpFlag)
+		options[3] = " ISPHER=1 COORD=UNIQUE NOSYM=1 UNITS=ANGS PP=READ $END";
+	else
+		options[3] = " ISPHER=1 COORD=UNIQUE NOSYM=1 UNITS=ANGS $END";
 
 	if (nOpt == 0)
 		options[2] = " $CONTRL SCFTYP=RHF RUNTYP=OPTIMIZE EXETYP=RUN MPLEVL=2 MAXIT=200 MULT=1";

@@ -21,7 +21,7 @@ private:
 
 	void copyFile(std::string from, std::string to);
 
-	std::vector<std::string> setGamessOptions(int nOpt);
+	std::vector<std::string> setGamessOptions(int nOpt, bool ecpFlag);
 
 };
 
