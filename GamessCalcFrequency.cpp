@@ -17,7 +17,7 @@ GamessCalcFrequency::~GamessCalcFrequency() {}
 GamessCalcFrequency::GamessCalcFrequency(string gamessPathVerno, string scrPath, string nProc)
 {
 	ofstream freqFile_("frequenciesFiles.txt");
-	string exec = gamessPathVerno + "  " + nProc;
+	string exec = gamessPathVerno + "  " + nProc + "  ";
 	string removeScr = "rm  " + scrPath;
 
 	for (int naI = 0; naI < 10; naI++)
@@ -48,13 +48,13 @@ GamessCalcFrequency::GamessCalcFrequency(string gamessPathVerno, string scrPath,
 
 			for (int i = 0; i < naI; i++)
 			{
-				optionsOtim.push_back("auxFiles/na-base.txt");
-				optionsFreq.push_back("auxFiles/na-base.txt");
+				optionsOtim.push_back("na-base.txt");
+				optionsFreq.push_back("na-base.txt");
 			}
 			for (int i = 0; i < liI; i++)
 			{
-				optionsOtim.push_back("auxFiles/li-base.txt");
-				optionsFreq.push_back("auxFiles/li-base.txt");
+				optionsOtim.push_back("li-base.txt");
+				optionsFreq.push_back("li-base.txt");
 			}
 			optionsOtim.push_back("EndOfBasis");
 			optionsFreq.push_back("EndOfBasis");
@@ -62,13 +62,13 @@ GamessCalcFrequency::GamessCalcFrequency(string gamessPathVerno, string scrPath,
 			optionsFreq.push_back("ActivateEcp");
 			for (int i = 0; i < naI; i++)
 			{
-				optionsOtim.push_back("auxFiles/na-ecp.txt");
-				optionsFreq.push_back("auxFiles/na-ecp.txt");
+				optionsOtim.push_back("na-ecp.txt");
+				optionsFreq.push_back("na-ecp.txt");
 			}
 			for (int i = 0; i < liI; i++)
 			{
-				optionsOtim.push_back("auxFiles/li-ecp.txt");
-				optionsFreq.push_back("auxFiles/li-ecp.txt");
+				optionsOtim.push_back("li-ecp.txt");
+				optionsFreq.push_back("li-ecp.txt");
 			}
 			optionsOtim.push_back("EndOfEcp");
 			optionsFreq.push_back("EndOfEcp");
@@ -81,7 +81,6 @@ GamessCalcFrequency::GamessCalcFrequency(string gamessPathVerno, string scrPath,
 			projectName = "na-" + naNumber + "-li-" + liNumber + "-ver-";
 			optionsOtim[1] = projectName;
 			optionsFreq[1] = projectName;
-
 
 			WriteQuantumInput writeInput_(optionsOtim);
 			string inputName = writeInput_.createInput(mol);
