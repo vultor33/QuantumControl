@@ -92,7 +92,7 @@ GamessCalcFrequency::GamessCalcFrequency(string gamessPath, string scrPath, stri
 			system((removeScr + inputName2 + ".dat").c_str());
 			system((gamessPath + inputName2 + ".inp" + " 00 " + nProc + "  >  " + inputName2 + ".out").c_str());
 			ReadQuantumOutput readO2_("gamess");
-			readO2_.readOutput(inputName);
+			readO2_.readOutput(inputName2);
 			vector<CoordXYZ> mol2 = readO2_.getCoordinates();
 
 			WriteQuantumInput writeInput3_(optionsFreq);
@@ -100,7 +100,7 @@ GamessCalcFrequency::GamessCalcFrequency(string gamessPath, string scrPath, stri
 			system((removeScr + inputName3 + ".dat").c_str());
 			system((gamessPath + inputName3 + ".inp" + " 00 " + nProc + "  >  " + inputName3 + ".out").c_str());
 			ReadQuantumOutput readO3_("gamess");
-			readO3_.readOutput(inputName);
+			readO3_.readOutput(inputName3);
 			double freq = readO3_.getFirstFrequency();
 
 			freqFile_ << "na:  " << naI << "  li:  " << liI << "  freq:  " << freq << endl;

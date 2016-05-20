@@ -16,9 +16,7 @@ int main()
 	string scrPath = "/scr/";
 	string nProc = "8";
 	GamessCalcFrequency gcf_(gamessPathVerno, scrPath, nProc);
-
-	cout << "end" << endl;
-	cin.get();
+	
 	return 0;
 }
 
