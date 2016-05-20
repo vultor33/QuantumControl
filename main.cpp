@@ -12,7 +12,7 @@ using namespace std;
 
 int main()
 {
-	string gamessPathVerno = "/programas/gamess/rungms 00 ";
+	string gamessPathVerno = "/programas/gamess/rungms ";
 	string scrPath = "/scr/";
 	string nProc = "8";
 	GamessCalcFrequency gcf_(gamessPathVerno, scrPath, nProc);

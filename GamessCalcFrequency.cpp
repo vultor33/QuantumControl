@@ -14,10 +14,9 @@ using namespace std;
 
 GamessCalcFrequency::~GamessCalcFrequency() {}
 
-GamessCalcFrequency::GamessCalcFrequency(string gamessPathVerno, string scrPath, string nProc)
+GamessCalcFrequency::GamessCalcFrequency(string gamessPath, string scrPath, string nProc)
 {
 	ofstream freqFile_("frequenciesFiles.txt");
-	string exec = gamessPathVerno + "  " + nProc + "  ";
 	string removeScr = "rm  " + scrPath;
 
 	for (int naI = 0; naI < 10; naI++)
@@ -84,10 +83,8 @@ GamessCalcFrequency::GamessCalcFrequency(string gamessPathVerno, string scrPath,
 
 			WriteQuantumInput writeInput_(optionsOtim);
 			string inputName = writeInput_.createInput(mol);
-			cout << (removeScr + inputName + ".dat").c_str() << endl;
-			cout << (exec + inputName + ".inp" + "  >  " + inputName + ".out").c_str();
 			system((removeScr + inputName + ".dat").c_str());
-			system((exec + inputName + ".inp" + "  >  " + inputName + ".out").c_str());
+			system((gamessPath + inputName + ".inp" + " 00 " + nProc + "  >  " + inputName + ".out").c_str());
 			ReadQuantumOutput readO1_("gamess");
 			readO1_.readOutput(inputName);
 			vector<CoordXYZ> mol1 = readO1_.getCoordinates();
@@ -95,7 +92,7 @@ GamessCalcFrequency::GamessCalcFrequency(string gamessPathVerno, string scrPath,
 			WriteQuantumInput writeInput2_(optionsOtim);
 			string inputName2 = writeInput2_.createInput(mol1, 1);
 			system((removeScr + inputName2 + ".dat").c_str());
-			system((exec + inputName2 + ".inp" + "  >  " + inputName2 + ".out").c_str());
+			system((gamessPath + inputName2 + ".inp" + " 00 " + nProc + "  >  " + inputName2 + ".out").c_str());
 			ReadQuantumOutput readO2_("gamess");
 			readO2_.readOutput(inputName);
 			vector<CoordXYZ> mol2 = readO2_.getCoordinates();
@@ -103,7 +100,7 @@ GamessCalcFrequency::GamessCalcFrequency(string gamessPathVerno, string scrPath,
 			WriteQuantumInput writeInput3_(optionsFreq);
 			string inputName3 = writeInput2_.createInput(mol2, 2);
 			system((removeScr + inputName3 + ".dat").c_str());
-			system((exec + inputName3 + ".inp" + "  >  " + inputName3 + ".out").c_str());
+			system((gamessPath + inputName3 + ".inp" + " 00 " + nProc + "  >  " + inputName3 + ".out").c_str());
 			ReadQuantumOutput readO3_("gamess");
 			readO3_.readOutput(inputName);
 			double freq = readO3_.getFirstFrequency();

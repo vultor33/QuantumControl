@@ -8,7 +8,7 @@
 class GamessCalcFrequency
 {
 public:
-	GamessCalcFrequency(std::string gamessPathVerno, std::string scrPath, std::string nProc);
+	GamessCalcFrequency(std::string gamessPath, std::string scrPath, std::string nProc);
 	
 	~GamessCalcFrequency();
 
