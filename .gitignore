@@ -6,5 +6,5 @@ GamessControl.*
 coord*
 *.o
 *.exe
-
+*.inp
 
