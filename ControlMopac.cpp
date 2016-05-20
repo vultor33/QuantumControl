@@ -81,7 +81,9 @@ double ControlMopac::getHydrogenError(
 
 	double evHartree = 0.0367502e0;
 
-	double error = calcError_.calculate(model, x, readmop_.getDipole(), readmop_.getEnergy() * evHartree, readmop_.getIonizationPotential() * evHartree);
+	vector<double> dipole = readmop_.getDipole();
+
+	double error = calcError_.calculate(model, x, dipole, readmop_.getEnergy() * evHartree, readmop_.getIonizationPotential() * evHartree);
 
 	return error;
 }

@@ -27,7 +27,11 @@ GamessCalcFrequency::GamessCalcFrequency(string gamessPathVerno, string scrPath,
 			if ((naI + liI < 5) || (naI + liI > 10))
 				continue;
 
+			cout << "estou aqui  " << naI << "  " << liI << endl;
+
 			vector<CoordXYZ> mol = readCoordinates(naI, liI);
+			cout << "leu coordenadas" << endl;
+
 			vector<string> optionsOtim;
 			vector<string> optionsFreq;
 
@@ -69,9 +73,21 @@ GamessCalcFrequency::GamessCalcFrequency(string gamessPathVerno, string scrPath,
 			optionsOtim.push_back("EndOfEcp");
 			optionsFreq.push_back("EndOfEcp");
 
+			string projectName;
+			string naNumber, liNumber;
+			stringstream convert;
+			convert << naI << "  " << liI;
+			convert >> naNumber >> liNumber;
+			projectName = "na-" + naNumber + "-li-" + liNumber + "-ver-";
+			optionsOtim[1] = projectName;
+			optionsFreq[1] = projectName;
+
+
 			WriteQuantumInput writeInput_(optionsOtim);
 			string inputName = writeInput_.createInput(mol);
-			system((removeScr + inputName + ".dat").c_str);
+			cout << (removeScr + inputName + ".dat").c_str() << endl;
+			cout << (exec + inputName + ".inp" + "  >  " + inputName + ".out").c_str();
+			system((removeScr + inputName + ".dat").c_str());
 			system((exec + inputName + ".inp" + "  >  " + inputName + ".out").c_str());
 			ReadQuantumOutput readO1_("gamess");
 			readO1_.readOutput(inputName);
@@ -79,7 +95,7 @@ GamessCalcFrequency::GamessCalcFrequency(string gamessPathVerno, string scrPath,
 
 			WriteQuantumInput writeInput2_(optionsOtim);
 			string inputName2 = writeInput2_.createInput(mol1, 1);
-			system((removeScr + inputName2 + ".dat").c_str);
+			system((removeScr + inputName2 + ".dat").c_str());
 			system((exec + inputName2 + ".inp" + "  >  " + inputName2 + ".out").c_str());
 			ReadQuantumOutput readO2_("gamess");
 			readO2_.readOutput(inputName);
@@ -87,7 +103,7 @@ GamessCalcFrequency::GamessCalcFrequency(string gamessPathVerno, string scrPath,
 
 			WriteQuantumInput writeInput3_(optionsFreq);
 			string inputName3 = writeInput2_.createInput(mol2, 2);
-			system((removeScr + inputName3 + ".dat").c_str);
+			system((removeScr + inputName3 + ".dat").c_str());
 			system((exec + inputName3 + ".inp" + "  >  " + inputName3 + ".out").c_str());
 			ReadQuantumOutput readO3_("gamess");
 			readO3_.readOutput(inputName);
@@ -109,13 +125,16 @@ vector<CoordXYZ> GamessCalcFrequency::readCoordinates(int naI, int liI)
 	xyzName = "na" + naNumber + "li" + liNumber + ".xyz";
 
 	ifstream readXyz_(xyzName.c_str());
-	vector<CoordXYZ> mol;
-	string dum1, dum2;
-	readXyz_ >> dum1;
-	readXyz_ >> dum2;
+	vector<CoordXYZ> mol(naI + liI);
+	string auxline;
+	getline(readXyz_,auxline);
+	getline(readXyz_,auxline);
 	for (int i = 0; i < naI + liI; i++)
 	{
-		readXyz_ >> mol[i].atomlabel
+		getline(readXyz_,auxline);
+		stringstream line;
+		line << auxline;
+		line >> mol[i].atomlabel
 			>> mol[i].x
 			>> mol[i].y
 			>> mol[i].z;

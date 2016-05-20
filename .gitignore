@@ -4,3 +4,7 @@ GamessControl.*
 *.out
 *.arc
 coord*
+*.o
+*.exe
+
+
