@@ -28,7 +28,7 @@ bool ControlMopac::optimize(
 
 	string inputName = writeMop_.createInput(allAtoms);
 
-	createParamsFile("hparams", params);
+	createParamsFile(options[3], params);
 
 	system((mopacExecPath + inputName + ".mop").c_str());
 
@@ -49,7 +49,7 @@ bool ControlMopac::optimize(
 double ControlMopac::getHydrogenError(
 	vector<CoordXYZ> & allAtoms,
 	vector<string> & options,
-	vector<double> & params,
+	vector<MopacParams> & params,
 	int model)
 {
 	ReadQuantumOutput readmop_("mopac");
@@ -89,34 +89,6 @@ double ControlMopac::getHydrogenError(
 
 	return error;
 }
-
-
-
-
-void ControlMopac::createParamsFile(string paramsName, vector<double>& params)
-{
-	string name = paramsName + ".inp";
-	remove(name.c_str());
-	ofstream paramsFile_(name.c_str());
-
-	paramsFile_ << "USS    H  " << params[0] << endl;
-	paramsFile_ << "ZS     H  " << params[1] << endl;
-	paramsFile_ << "BETAS  H  " << params[2] << endl;
-	paramsFile_ << "ALP    H  " << params[3] << endl;
-	paramsFile_ << "GSS    H  " << params[4] << endl;
-	paramsFile_ << "FN11   H  " << params[5] << endl;
-	paramsFile_ << "FN21   H  " << params[6] << endl;
-	paramsFile_ << "FN31   H  " << params[7] << endl;
-	paramsFile_ << "FN12   H  " << 0.0e0 << endl;
-	paramsFile_ << "FN22   H  " << 0.0e0 << endl;
-	paramsFile_ << "FN32   H  " << 0.0e0 << endl;
-	paramsFile_ << "FN13   H  " << 0.0e0 << endl;
-	paramsFile_ << "FN23   H  " << 0.0e0 << endl;
-	paramsFile_ << "FN33   H  " << 0.0e0 << endl;
-	paramsFile_ << "  END     " << endl;
-	paramsFile_.close();
-}
-
 
 void ControlMopac::createParamsFile(string paramsName, vector<MopacParams>& params)
 {

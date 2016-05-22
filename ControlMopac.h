@@ -25,13 +25,11 @@ public:
 	double getHydrogenError(
 		std::vector<CoordXYZ> & allAtoms,
 		std::vector<std::string> & options,
-		std::vector<double> &params,
+		std::vector<MopacParams> &params,
 		int model);
 
 
 private:
-
-	void createParamsFile(std::string paramsName, std::vector<double> &params);
 
 	void createParamsFile(std::string paramsName, std::vector<MopacParams> &params);
 
