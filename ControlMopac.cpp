@@ -17,10 +17,11 @@ ControlMopac::ControlMopac() {}
 ControlMopac::~ControlMopac(){}
 
 bool ControlMopac::optimize(
-	vector<CoordXYZ> & allAtoms, 
+	vector<CoordXYZ> & allAtoms,
 	vector<string> & options,
-	vector<double> & params)
+	vector<MopacParams> & params)
 {
+
 	ReadQuantumOutput readmop_("mopac");
 
 	WriteQuantumInput writeMop_(options);
@@ -41,6 +42,7 @@ bool ControlMopac::optimize(
 
 	return true;
 }
+
 
 
 
@@ -114,5 +116,22 @@ void ControlMopac::createParamsFile(string paramsName, vector<double>& params)
 	paramsFile_ << "  END     " << endl;
 	paramsFile_.close();
 }
+
+
+void ControlMopac::createParamsFile(string paramsName, vector<MopacParams>& params)
+{
+	string name = paramsName + ".inp";
+	remove(name.c_str());
+	ofstream paramsFile_(name.c_str());
+
+	for (size_t i = 0; i < params.size(); i++)
+		paramsFile_ << params[i].paramName << "  " << params[i].paramValue << endl;
+
+	paramsFile_ << "  END     " << endl;
+	paramsFile_.close();
+}
+
+
+
 
 

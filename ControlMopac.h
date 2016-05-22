@@ -19,7 +19,8 @@ public:
 	bool optimize(
 		std::vector<CoordXYZ> & allAtoms,
 		std::vector<std::string> & options,
-		std::vector<double> &params);
+		std::vector<MopacParams> &params);
+
 
 	double getHydrogenError(
 		std::vector<CoordXYZ> & allAtoms,
@@ -31,6 +32,8 @@ public:
 private:
 
 	void createParamsFile(std::string paramsName, std::vector<double> &params);
+
+	void createParamsFile(std::string paramsName, std::vector<MopacParams> &params);
 
 	std::string mopacExecPath = "C:/\"Program Files\"/MOPAC/MOPAC2016.exe  ";
 
