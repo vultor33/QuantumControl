@@ -81,7 +81,7 @@ void WriteQuantumInput::setInputProperties(vector<string> &options)
 		{
 			cout << "number of ecp and atomic bassis files don't match"
 				<< endl << "check input" << endl;
-			exit(1);
+			throw 0;
 		}
 		readGamessAuxFiles();
 	}
@@ -140,12 +140,19 @@ string WriteQuantumInput::createInput(
 	string inputName, indexString;
 	convertInd << indexAddedAtFinalOfInputToSaveItsName;
 	convertInd >> indexString;
-	inputName = projectName + indexString;
+	if (indexAddedAtFinalOfInputToSaveItsName == 0)
+		indexString = "";
 
-	if ((type == "mopac") || (type == "mopac2009"))
-		buildMopacInput(coordinates, inputName);
-	else if (type == "gamess")
-		buildGamessInput(coordinates, inputName);
+	inputName = projectName + indexString;
+	try {
+		if ((type == "mopac") || (type == "mopac2009"))
+			buildMopacInput(coordinates, inputName);
+		else if (type == "gamess")
+			buildGamessInput(coordinates, inputName);
+	}
+	catch (...) {
+		return "";
+	}
 
 	return inputName;
 }
@@ -163,7 +170,7 @@ void WriteQuantumInput::buildGamessInput(vector<CoordXYZ> &coordinates, string i
 	if (gamessAtomBasisFiles.size() != coordinates.size())
 	{
 		cout << "basis quantity and atoms quantity dont match" << endl;
-		exit(1);
+		throw 0;
 	}
 
 	//writing coordinates and basis
@@ -309,7 +316,7 @@ int WriteQuantumInput::getChargeFromAtom(string atomName)
 	else
 	{
 		cout << "ATOM NOT REGISTERED - CONTACT DEVELOPERS" << endl;
-		exit(1);
+		throw 0;
 	}
 }
 

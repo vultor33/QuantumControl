@@ -7,4 +7,6 @@ coord*
 *.o
 *.exe
 *.inp
+*.log
+*.inp
 
