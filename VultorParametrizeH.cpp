@@ -8,7 +8,7 @@ VultorParametrizeH::VultorParametrizeH(){}
 
 VultorParametrizeH::~VultorParametrizeH(){}
 
-double VultorParametrizeH::getError(vector<double> &params)
+double VultorParametrizeH::getError(vector<MopacParams> &params)
 {
 	/*
 	h2Pcoord = "-0.1788677855   0.0000000000   0.0000000000\n";
@@ -23,6 +23,20 @@ double VultorParametrizeH::getError(vector<double> &params)
 	h4Pcoord += "-1.45159804   -1.55801030    0.00000000\n";
 	h4Pcoord += "-1.45159804    0.16340270    0.00000000\n";
 	*/
+	params[0].paramName = "USS    H  ";
+	params[1].paramName = "ZS     H  ";
+	params[2].paramName = "BETAS  H  ";
+	params[3].paramName = "ALP    H  ";
+	params[4].paramName = "GSS    H  ";
+	params[5].paramName = "FN11   H  ";
+	params[6].paramName = "FN21   H  ";
+	params[7].paramName = "FN31   H  ";
+	params[8].paramName = "FN12   H  ";
+	params[9].paramName = "FN22   H  ";
+	params[10].paramName = "FN32   H  ";
+	params[11].paramName = "FN13   H  ";
+	params[12].paramName = "FN23   H  ";
+	params[13].paramName = "FN33   H  ";
 
 	//MODELO 1
 	ControlMopac controlMop1;

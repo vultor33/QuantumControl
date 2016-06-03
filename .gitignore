@@ -6,7 +6,9 @@ GamessControl.*
 coord*
 *.o
 *.exe
-*.inp
 *.log
 *.inp
+MopacBoro*
+
+
 

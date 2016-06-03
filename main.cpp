@@ -7,21 +7,79 @@
 #include "ReadQuantumOptions.h"
 #include "WriteQuantumInput.h"
 #include "GamessCalcFrequency.h"
+#include "VultorParametrizeH.h"
 
 using namespace std;
 
 int main()
 {
-	string gamessPathVerno = "/programas/gamess/rungms ";
-	string scrPath = "/scr/";
-	string nProc = "8";
-	GamessCalcFrequency gcf_(gamessPathVerno, scrPath, nProc);
+	ControlMopac crmp_;
+	vector<CoordXYZ> x(4);
+	x[0].atomlabel = "B";
+	x[0].x = 0;
+	x[0].y = 0;
+	x[0].z = 0;
+	x[1].atomlabel = "H";
+	x[1].x = 1;
+	x[1].y = 0;
+	x[1].y = 0;
+	x[2].atomlabel = "H";
+	x[2].x = 0;
+	x[2].y = 1;
+	x[2].z = 0;
+	x[3].atomlabel = "H";
+	x[3].x = 0;
+	x[3].y = 0;
+	x[3].z = 1;
+
+	vector<MopacParams> params(14);
+	params[0].paramValue = 1;
+	params[1].paramValue = 1;
+	params[2].paramValue = 1;
+	params[3].paramValue = 1;
+	params[4].paramValue = 1;
+	params[5].paramValue = 1;
+	params[6].paramValue = 1;
+	params[7].paramValue = 1;
+	params[8].paramValue = 1;
+	params[9].paramValue = 1;
+	params[10].paramValue = 1;
+	params[11].paramValue = 1;
+	params[12].paramValue = 1;
+	params[13].paramValue = 1;
+	params[0].paramName = "USS    B  ";
+	params[1].paramName = "ZS     B  ";
+	params[2].paramName = "BETAS  B  ";
+	params[3].paramName = "ALP    B  ";
+	params[4].paramName = "GSS    B  ";
+	params[5].paramName = "FN11   B  ";
+	params[6].paramName = "FN21   B  ";
+	params[7].paramName = "FN31   B  ";
+	params[8].paramName = "FN12   B  ";
+	params[9].paramName = "FN22   B  ";
+	params[10].paramName = "FN32   B  ";
+	params[11].paramName = "FN13   B  ";
+	params[12].paramName = "FN23   B  ";
+	params[13].paramName = "FN33   B  ";
+
+	vector<string> options(5);
+	options[0] = "mopac";
+	options[1] = "h5p-mol";
+	options[2] = "RM1";
+	options[3] = "hparams";
+	options[4] = "";
+	crmp_.optimize(x, options, params);
+
+
+
+	VultorParametrizeH vp_;
 	
 	return 0;
 }
 
 
-/* EXEMPLO GAMESS
+/* 
+EXEMPLO GAMESS
 vector<double> params(8);
 params[0] = -11.96067700;
 params[1] = 1.08267370;
@@ -73,6 +131,13 @@ string name = wri_.createInput(mol);
 ReadQuantumOutput redQ_("gamess");
 redQ_.activateDeactivateReadings("ionization", false);
 redQ_.readOutput("build-na-1-li-20");
+
+
+EXEMPLO DE VARIAS OTIMIZACOES DO GAMESS
+string gamessPathVerno = "/programas/gamess/rungms ";
+string scrPath = "/scr/";
+string nProc = "8";
+GamessCalcFrequency gcf_(gamessPathVerno, scrPath, nProc);
 
 
 // ler as paradinhas no fomato xyz
