@@ -1,4 +1,4 @@
-PROGRAMA QUE AUXILIA NO CONTROLE DOS PROGRAS QUÂNTICOS
+PROGRAMA QUE AUXILIA NO CONTROLE DOS PROGRAS QUÃ‚NTICOS
 
 -> input do gamess sendo montado corretamente.
 -> falta ler o output do gamess.
@@ -10,12 +10,12 @@ PROGRAMA QUE AUXILIA NO CONTROLE DOS PROGRAS QUÂNTICOS
                          read gradient.
 
 
-"quantumOptions.inp" - arquivo que contêm as opcoes.
+"quantumOptions.inp" - arquivo que contÃªm as opcoes.
 
 
 USANDO: WriteQuantumInput
-        [Objeto que constrói um input para um programa
-         quântico usando um conjunto de coordenadas]
+        [Objeto que constrÃ³i um input para um programa
+         quÃ¢ntico usando um conjunto de coordenadas]
 
   -> CONSTRUCTOR
 
@@ -27,7 +27,7 @@ USANDO: WriteQuantumInput
   "mopac" ou "mopac2009"
     options[2] = "cabecalho do mopac"
     options[3] = "nome dos arquivos externos"
-    options[4] = "nome do átomo central"
+    options[4] = "nome do Ã¡tomo central"
     )
 
 
@@ -36,7 +36,7 @@ USANDO: WriteQuantumInput
                      n termina quando ele encontra o flag: "EndOfHeader"
     options[n-m]   = varias linhas que indicam os ARQUIVOS que contem
                      as bases dos atomos.
-                     m termina quando o flag "EndOfBasis" é encontrado
+                     m termina quando o flag "EndOfBasis" Ã© encontrado
     options[m+1]   = se tiver a flag ActivateEcp, continue lendo.
     options[m+1-l] = varias linhas que indicam os ARQUIVOS que contem os
                      ECP's.
@@ -48,6 +48,8 @@ USANDO: WriteQuantumInput
     ATENCAO - E necessario a pasta auxFiles com os arquivos citados no
               options.
 
+    ATENCAO - Para o ECP os atomos de mesmo ecp precisam estar agrupados
+
   -> CRIACAO DE INPUT
 
   string createInput(
@@ -56,14 +58,14 @@ USANDO: WriteQuantumInput
 
   int index
   numero a ser adicionado no final, serve para manter
-  os inputs caso faça-se um grande número de contas.
+  os inputs caso faÃ§a-se um grande nÃºmero de contas.
   )
 
   retorna uma string com o nome do input.
   observacao -> para executa-la e necessario adicionar
   a extensao correspondente ".mop" para mopac.
 
-  -> FUNÇÕES PÚBLICAS
+  -> FUNÃ‡Ã•ES PÃšBLICAS
 
   changeProjectName(
   string newProjectName
@@ -73,13 +75,13 @@ USANDO: WriteQuantumInput
 
   changeMopacHeader(
   string newMopacHeader
-  todos os futuros inputs criados terao o cabeçalho definido aqui
+  todos os futuros inputs criados terao o cabeÃ§alho definido aqui
   util para calcular frequencia, por exemplo.
   )
 
 
 USANDO: ReadQuantumOutput
-        [objeto que lê as propriedades de output quântico]
+        [objeto que lÃª as propriedades de output quÃ¢ntico]
 
   CONSTRUCTOR
   -> ReadQuantumOutput(
@@ -90,18 +92,18 @@ USANDO: ReadQuantumOutput
   LEITURA DO OUTPUT
   -> readOutput(
   string inputName
-  nome do output a ser lido. Pode ser a mesma saída do
+  nome do output a ser lido. Pode ser a mesma saÃ­da do
   WriteQuantumInput::createInput
   )
 
-  observação1: a leitura usa sempre a extensao ".out"
+  observaÃ§Ã£o1: a leitura usa sempre a extensao ".out"
 
-  observação2: sempre tenta ler tudo com  os criterios definidos
-               em ReadQuantumOutput, o que ele achar, é isso mesmo.
+  observaÃ§Ã£o2: sempre tenta ler tudo com  os criterios definidos
+               em ReadQuantumOutput, o que ele achar, Ã© isso mesmo.
 
-  observação3: as informacoes ficam dentro do objeto
+  observaÃ§Ã£o3: as informacoes ficam dentro do objeto
 
-  PÚBLICAS
+  PÃšBLICAS
 
   -> activateDeactivateReadings(std::string activateOption, bool activate) 
      funcao que permite desativar certas leituras.
@@ -120,7 +122,7 @@ USANDO: ReadQuantumOutput
   double getFirstFrequency()
 
 
-IMPLEMENTAÇÂO
+IMPLEMENTAÃ‡Ã‚O
 
 Funcoes que precisam ser implementadas:
 
