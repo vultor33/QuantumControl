@@ -57,18 +57,14 @@ void WriteQuantumInput::setInputProperties(vector<string> &options)
 			gamessAtomBasisFiles.push_back(options[i]);
 		}
 
-		if (iEndBasis != (options.size() - 1))
+		if (iEndBasis != ((int)options.size() - 1))
 		{
-			int iEndEcp;
 			if (options[iEndBasis + 1] == "ActivateEcp")
 			{
 				for (size_t i = iEndBasis + 2; i < options.size(); i++)
 				{
 					if (options[i] == "EndOfEcp")
-					{
-						iEndEcp = i;
 						break;
-					}
 
 					gamessEcpFiles.push_back(options[i]);
 				}
@@ -140,8 +136,8 @@ string WriteQuantumInput::createInput(
 	string inputName, indexString;
 	convertInd << indexAddedAtFinalOfInputToSaveItsName;
 	convertInd >> indexString;
-	if (indexAddedAtFinalOfInputToSaveItsName == 0)
-		indexString = "";
+//	if (indexAddedAtFinalOfInputToSaveItsName == 0)
+//		indexString = "";
 
 	inputName = projectName + indexString;
 	try {
@@ -191,10 +187,29 @@ void WriteQuantumInput::buildGamessInput(vector<CoordXYZ> &coordinates, string i
 	if (gamessEcpFiles.size() != 0)
 	{
 		gamessInput_ << " $ECP" << endl;
+		string ecpUsed = "";
 		for (size_t i = 0; i < atomEcp.size(); i++)
 		{
-			for (size_t j = 0; j < atomEcp[i].size(); j++)
-				gamessInput_ << atomEcp[i][j] << endl;
+			if(atomEcp[i].size() == 1)
+				gamessInput_ << atomEcp[i][0] << endl;
+			else
+			{
+				if(ecpUsed == "")
+					ecpUsed = atomEcp[i][0];
+				else if(ecpUsed != atomEcp[i][0])
+					ecpUsed = "";
+				else
+				{
+					stringstream convertEcp;
+					convertEcp << atomEcp[i][0];
+					string ecpFirstName;
+					convertEcp >> ecpFirstName;
+					gamessInput_ << " " << ecpFirstName << endl;
+					continue;
+				}
+				for (size_t j = 0; j < atomEcp[i].size(); j++)
+					gamessInput_ << atomEcp[i][j] << endl;
+			}
 		}
 
 		gamessInput_ << " $END" << endl;

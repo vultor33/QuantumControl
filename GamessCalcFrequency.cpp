@@ -20,7 +20,7 @@ GamessCalcFrequency::GamessCalcFrequency(string gamessPath, string scrPath, stri
 	string removeScr = "rm  " + scrPath;
 	bool ecpFlag;
 
-	for (int naI = 0; naI < 10; naI++)
+	for (int naI = 2; naI < 10; naI++)
 	{
 		for (int liI = 1; liI < 10; liI++)
 		{
@@ -81,6 +81,7 @@ GamessCalcFrequency::GamessCalcFrequency(string gamessPath, string scrPath, stri
 
 			WriteQuantumInput writeInput_(optionsOtim);
 			string inputName = writeInput_.createInput(mol);
+			if(inputName == "") continue;
 			system((removeScr + inputName + ".dat").c_str());
 			system((gamessPath + inputName + ".inp" + " 00 " + nProc + "  >  " + inputName + ".out").c_str());
 			ReadQuantumOutput readO1_("gamess");
@@ -89,6 +90,7 @@ GamessCalcFrequency::GamessCalcFrequency(string gamessPath, string scrPath, stri
 
 			WriteQuantumInput writeInput2_(optionsOtim);
 			string inputName2 = writeInput2_.createInput(mol1, 1);
+			if(inputName2 == "") continue;
 			system((removeScr + inputName2 + ".dat").c_str());
 			system((gamessPath + inputName2 + ".inp" + " 00 " + nProc + "  >  " + inputName2 + ".out").c_str());
 			ReadQuantumOutput readO2_("gamess");
@@ -97,6 +99,7 @@ GamessCalcFrequency::GamessCalcFrequency(string gamessPath, string scrPath, stri
 
 			WriteQuantumInput writeInput3_(optionsFreq);
 			string inputName3 = writeInput3_.createInput(mol2, 2);
+			if(inputName3 == "") continue;
 			system((removeScr + inputName3 + ".dat").c_str());
 			system((gamessPath + inputName3 + ".inp" + " 00 " + nProc + "  >  " + inputName3 + ".out").c_str());
 			ReadQuantumOutput readO3_("gamess");
