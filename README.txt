@@ -146,6 +146,8 @@ ReadQuantumOutput::haveToReadFrequency
 
 
 
+UTILIDADES
 
+-> Em GamessCalculateFrequency -> tem ums funcoes que coletam a energia de arquivos xyz.
 
 
