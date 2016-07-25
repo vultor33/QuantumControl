@@ -5,6 +5,7 @@
 #include <fstream>
 #include <vector>
 #include <iostream>
+#include <iomanip>
 
 #include "Coordstructs.h"
 #include "WriteQuantumInput.h"
@@ -145,6 +146,47 @@ vector<CoordXYZ> GamessCalcFrequency::readCoordinates(int naI, int liI)
 	return mol;
 }
 
+
+void GamessCalcFrequency::getLowestEnergyFromXyzFile(std::vector<std::string> & filenames, std::string lowEnergyFileName, std::ofstream & allEnergies)
+{
+	vector<double> all;
+	size_t size = filenames.size();
+	for(size_t i = 0; i < size; i++)
+	{
+		double energyTemp = readXyzEnergy(filenames[i]);
+		all.push_back(energyTemp);
+	}
+	int low;
+	if(size == 1)
+		low = 0;
+	else
+	{
+		low = 0;
+		double lowestEnergy = all[low];
+		for(size_t i = 1; i < size; i++) 
+		{
+			if(lowestEnergy > all[i])
+			{
+				low = i;
+				lowestEnergy = all[i];
+			}
+		}
+	}	
+	copyFile(filenames[low], lowEnergyFileName);
+
+	allEnergies << lowEnergyFileName << "    ";
+	if(allEnergies.is_open())
+	{
+		for(size_t i = 0; i < size; i++)
+		{
+			allEnergies << setprecision(8) << all[i] << "             ";
+		}
+	}
+	allEnergies << endl;
+
+}
+
+/*
 void GamessCalcFrequency::getLowestEnergyFromXyzFile(int naI, int liI)
 {
 	double en1, en2, en3;
@@ -188,19 +230,12 @@ void GamessCalcFrequency::getLowestEnergyFromXyzFile(int naI, int liI)
 	copyName = "na" + naNumber + "li" + liNumber + ".xyz";
 	copyFile(xyzName, copyName);
 }
+*/
 
 
-double GamessCalcFrequency::readXyzEnergy(string path, int naI, int liI)
+double GamessCalcFrequency::readXyzEnergy(string name)
 {
-
-	string xyzName;
-	string naNumber, liNumber;
-	stringstream convert;
-	convert << naI << "  " << liI;
-	convert >> naNumber >> liNumber;
-	xyzName = path + "na" + naNumber + "li" + liNumber + ".xyz";
-
-	ifstream readXyz_(xyzName.c_str());
+	ifstream readXyz_(name.c_str());
 	string auxline;
 	getline(readXyz_, auxline);
 	getline(readXyz_, auxline);
