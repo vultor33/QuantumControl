@@ -14,5 +14,7 @@ using namespace std;
 
 int main()
 {
+        GamessCalcFrequency gcalc("/programas/gamess/rungms "," /scr/ "," 8 ");
+
 	return 0;
 }

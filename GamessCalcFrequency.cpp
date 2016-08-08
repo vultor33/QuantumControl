@@ -23,6 +23,7 @@ GamessCalcFrequency::GamessCalcFrequency(string gamessPath, string scrPath, stri
 	ofstream freqFile_("frequenciesFiles.txt");
 	string removeScr = "rm  " + scrPath;
 	bool ecpFlag;
+	bool doneFlag;
 
 	for (int naI = 2; naI < 10; naI++)
 	{
@@ -31,8 +32,18 @@ GamessCalcFrequency::GamessCalcFrequency(string gamessPath, string scrPath, stri
 			if ((naI + liI < 5) || (naI + liI > 10))
 				continue;
 
-			// COLOCAR AS QUE PASSARAM AQUI
-
+			doneFlag = false;
+			for(size_t ii = 0; ii < structuresDone.size() / 2; ii++)
+			{
+				if((structuresDone[2 * ii] == naI) &&
+				   (structuresDone[2 * ii + 1] == liI))
+				{
+					doneFlag = true;
+					break;
+				}
+			}
+			if(doneFlag)
+				continue;
 
 			ecpFlag = !((naI == 0) || (calcOptions[0] == "noecp"));
 			vector<CoordXYZ> mol = readCoordinates(naI, liI);
@@ -75,7 +86,6 @@ GamessCalcFrequency::GamessCalcFrequency(string gamessPath, string scrPath, stri
 			}
 			optionsOtim.push_back("EndOfEcp");
 			optionsFreq.push_back("EndOfEcp");
-
 			string projectName;
 			string naNumber, liNumber;
 			stringstream convert;
@@ -258,7 +268,7 @@ void GamessCalcFrequency::copyFile(string from, string to)
 
 vector<string> GamessCalcFrequency::setGamessOptions(int nOpt, bool ecpFlag, vector<string> & calcOptions)
 {
-	vector<string> options(6);
+	vector<string> options(7);
 	options[0] = "gamess";
 	options[1] = "";
 	options[4] = " $GUESS GUESS=HUCKEL $END";
