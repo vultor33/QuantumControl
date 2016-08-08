@@ -17,6 +17,9 @@ GamessCalcFrequency::~GamessCalcFrequency() {}
 
 GamessCalcFrequency::GamessCalcFrequency(string gamessPath, string scrPath, string nProc)
 {
+	vector<int> structuresDone;
+	vector<string> calcOptions = getFreqOptionsFromFile(structuresDone);
+
 	ofstream freqFile_("frequenciesFiles.txt");
 	string removeScr = "rm  " + scrPath;
 	bool ecpFlag;
@@ -28,22 +31,24 @@ GamessCalcFrequency::GamessCalcFrequency(string gamessPath, string scrPath, stri
 			if ((naI + liI < 5) || (naI + liI > 10))
 				continue;
 
-			ecpFlag = (naI != 0);
+			// COLOCAR AS QUE PASSARAM AQUI
+
+
+			ecpFlag = !((naI == 0) || (calcOptions[0] == "noecp"));
 			vector<CoordXYZ> mol = readCoordinates(naI, liI);
 			vector<string> optionsOtim;
 			vector<string> optionsFreq;
 
 			if (((naI + liI) % 2) == 0)
 			{
-				optionsOtim = setGamessOptions(0,ecpFlag);
-				optionsFreq = setGamessOptions(2,ecpFlag);
+				optionsOtim = setGamessOptions(0,ecpFlag,calcOptions);
+				optionsFreq = setGamessOptions(2,ecpFlag,calcOptions);
 			}
 			else
 			{
-				optionsOtim = setGamessOptions(1,ecpFlag);
-				optionsFreq = setGamessOptions(3,ecpFlag);
+				optionsOtim = setGamessOptions(1,ecpFlag,calcOptions);
+				optionsFreq = setGamessOptions(3,ecpFlag,calcOptions);
 			}
-
 			for (int i = 0; i < naI; i++)
 			{
 				optionsOtim.push_back("na-base.txt");
@@ -186,51 +191,39 @@ void GamessCalcFrequency::getLowestEnergyFromXyzFile(std::vector<std::string> & 
 
 }
 
-/*
-void GamessCalcFrequency::getLowestEnergyFromXyzFile(int naI, int liI)
+vector<string> GamessCalcFrequency::getFreqOptionsFromFile(vector<int> & structuresDone)
 {
-	double en1, en2, en3;
-	en1 = readXyzEnergy("coord-3968/", naI, liI);
-	en2 = readXyzEnergy("coord-13/", naI, liI);
-	en3 = readXyzEnergy("coord-4509/", naI, liI);
-	cout << "n:  " << naI << "  " << liI << endl;
-	cout << "en1:  " << en1 << "  en2:  " << en2 << "  en3:  " << en3 << endl;
-
-	string xyzName, copyName;
-	string naNumber, liNumber;
-	stringstream convert;
-	convert << naI << "  " << liI;
-	convert >> naNumber >> liNumber;
-	string path;
-
-	if (en1 < en2)
+        ifstream freqOptions_("calcFreqOptions.txt");
+        vector<string> calcOptions;
+	int n1, n2;
+        string auxline;
+	while(getline(freqOptions_,auxline))
 	{
-		if (en1 < en3)
-		{
-			path = "coord-3968/";
-		}
+		stringstream convert;
+		convert << auxline;
+		string first;
+		convert >> first;
+		if(first == "end")
+			break;
+		else if(first == "mp2")
+			calcOptions.push_back("mp2");
+		else if(first == "noecp")
+			calcOptions.push_back("noecp");
+		else if(first == "$CONTRL")
+			calcOptions.push_back(auxline);
 		else
 		{
-			path = "coord-4509/";
-		}
+			stringstream convertNumber;
+			convertNumber << auxline;
+			convertNumber >> n1 >> n2;
+			structuresDone.push_back(n1);
+			structuresDone.push_back(n2);
+		}	
 	}
-	else
-	{
-		if (en2 < en3)
-		{
-			path = "coord-13/";
-		}
-		else
-		{
-			path = "coord-4509/";
-		}
-	}
-
-	xyzName = path + "na" + naNumber + "li" + liNumber + ".xyz";
-	copyName = "na" + naNumber + "li" + liNumber + ".xyz";
-	copyFile(xyzName, copyName);
+        freqOptions_.close();
+	return calcOptions;
 }
-*/
+
 
 
 double GamessCalcFrequency::readXyzEnergy(string name)
@@ -263,18 +256,20 @@ void GamessCalcFrequency::copyFile(string from, string to)
 	dest.close();
 }
 
-vector<string> GamessCalcFrequency::setGamessOptions(int nOpt, bool ecpFlag)
+vector<string> GamessCalcFrequency::setGamessOptions(int nOpt, bool ecpFlag, vector<string> & calcOptions)
 {
-	vector<string> options(11);
+	vector<string> options(6);
 	options[0] = "gamess";
 	options[1] = "";
 	options[4] = " $GUESS GUESS=HUCKEL $END";
 	options[5] = " $SYSTEM MWORDS=40 MEMDDI=20  $END";
 	options[6] = " $SCF DIRSCF=.FALSE. $END";
-	options[7] = " $DATA";
-	options[8] = " titulo";
-	options[9] = "C1";
-	options[10] = "EndOfHeader";
+	if(calcOptions[1] != "mp2")
+		options.push_back(" $FORCE METHOD=SEMINUM $END");
+	options.push_back(" $DATA");
+	options.push_back(" titulo");
+	options.push_back("C1");
+	options.push_back("EndOfHeader");
 
 	if(ecpFlag)
 		options[3] = " ISPHER=1 COORD=UNIQUE NOSYM=1 UNITS=ANGS PP=READ $END";
@@ -282,13 +277,17 @@ vector<string> GamessCalcFrequency::setGamessOptions(int nOpt, bool ecpFlag)
 		options[3] = " ISPHER=1 COORD=UNIQUE NOSYM=1 UNITS=ANGS $END";
 
 	if (nOpt == 0)
-		options[2] = " $CONTRL SCFTYP=RHF RUNTYP=OPTIMIZE EXETYP=RUN MPLEVL=2 MAXIT=200 MULT=1";
+		options[2] = calcOptions[2];// " $CONTRL SCFTYP=RHF RUNTYP=OPTIMIZE EXETYP=RUN MPLEVL=2 MAXIT=200 MULT=1";
 	else if(nOpt == 1)
-		options[2] = " $CONTRL SCFTYP=ROHF RUNTYP=OPTIMIZE EXETYP=RUN MPLEVL=2 MAXIT=200 MULT=2";
+		options[2] = calcOptions[3];// " $CONTRL SCFTYP=ROHF RUNTYP=OPTIMIZE EXETYP=RUN MPLEVL=2 MAXIT=200 MULT=2";
 	else if(nOpt == 2)
-		options[2] = " $CONTRL SCFTYP=RHF RUNTYP=HESSIAN EXETYP=RUN MPLEVL=2 MAXIT=200 MULT=1";
+		options[2] = calcOptions[4];//" $CONTRL SCFTYP=RHF RUNTYP=HESSIAN EXETYP=RUN MPLEVL=2 MAXIT=200 MULT=1";
 	else if(nOpt == 3)
-		options[2] = " $CONTRL SCFTYP=ROHF RUNTYP=HESSIAN EXETYP=RUN MPLEVL=2 MAXIT=200 MULT=2";
+		options[2] = calcOptions[5];//" $CONTRL SCFTYP=ROHF RUNTYP=HESSIAN EXETYP=RUN MPLEVL=2 MAXIT=200 MULT=2";
 
 	return options;
 }
+
+
+
+

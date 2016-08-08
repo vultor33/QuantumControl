@@ -1,16 +1,12 @@
 PROGRAMA QUE AUXILIA NO CONTROLE DOS PROGRAS QUÂNTICOS
 
--> input do gamess sendo montado corretamente.
--> falta ler o output do gamess.
--> quem sabe trocar os coeficientes da base.
 
--> LENDO OUTPUT DO GAMESS
-   -> falta implementar: read frequency.
-                         read coordinates.
-                         read gradient.
 
 
 "quantumOptions.inp" - arquivo que contêm as opcoes.
+
+
+
 
 
 USANDO: WriteQuantumInput

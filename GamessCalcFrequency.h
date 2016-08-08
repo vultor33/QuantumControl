@@ -26,7 +26,9 @@ private:
 
 	void copyFile(std::string from, std::string to);
 
-	std::vector<std::string> setGamessOptions(int nOpt, bool ecpFlag);
+	std::vector<std::string> setGamessOptions(int nOpt, bool ecpFlag, std::vector<std::string> & calcOptions);
+
+	std::vector<std::string> getFreqOptionsFromFile(std::vector<int> & structuresDone);
 
 };
 
@@ -51,7 +53,6 @@ EXAMPLE ON MAIN
 	files[2] = path3 + clusterName;
 	gqf_.getLowestEnergyFromXyzFile(files,clusterName,of_);
 */
-
 
 
 
