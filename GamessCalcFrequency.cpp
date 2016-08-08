@@ -215,8 +215,8 @@ vector<string> GamessCalcFrequency::getFreqOptionsFromFile(vector<int> & structu
 		convert >> first;
 		if(first == "end")
 			break;
-		else if(first == "mp2")
-			calcOptions.push_back("mp2");
+		else if((first == "mp2")||(first=="dft"))
+			calcOptions.push_back(first);
 		else if(first == "noecp")
 			calcOptions.push_back("noecp");
 		else if(first == "$CONTRL")
@@ -228,7 +228,7 @@ vector<string> GamessCalcFrequency::getFreqOptionsFromFile(vector<int> & structu
 			convertNumber >> n1 >> n2;
 			structuresDone.push_back(n1);
 			structuresDone.push_back(n2);
-		}	
+		}
 	}
         freqOptions_.close();
 	return calcOptions;
