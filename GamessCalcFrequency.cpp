@@ -17,120 +17,6 @@ GamessCalcFrequency::~GamessCalcFrequency() {}
 
 GamessCalcFrequency::GamessCalcFrequency() {}
 
-GamessCalcFrequency::GamessCalcFrequency(string gamessPath, string scrPath, string nProc)
-{
-	vector<int> structuresDone;
-	vector<string> calcOptions = getFreqOptionsFromFile(structuresDone);
-
-	ofstream freqFile_("frequenciesFiles.txt");
-	string removeScr = "rm  " + scrPath;
-	bool ecpFlag;
-	bool doneFlag;
-
-	for (int naI = 0; naI < 10; naI++)
-	{
-		for (int liI = 1; liI < 10; liI++)
-		{
-			if ((naI + liI < 3) || (naI + liI > 5))
-				continue;
-
-			doneFlag = false;
-			for(size_t ii = 0; ii < structuresDone.size() / 2; ii++)
-			{
-				if((structuresDone[2 * ii] == naI) &&
-				   (structuresDone[2 * ii + 1] == liI))
-				{
-					doneFlag = true;
-					break;
-				}
-			}
-			if(doneFlag)
-				continue;
-
-			ecpFlag = !((naI == 0) || (calcOptions[0] == "noecp"));
-			vector<CoordXYZ> mol = readCoordinates(naI, liI);
-			vector<string> optionsOtim;
-			vector<string> optionsFreq;
-
-			if (((naI + liI) % 2) == 0)
-			{
-				optionsOtim = setGamessOptions(0,ecpFlag,calcOptions);
-				optionsFreq = setGamessOptions(2,ecpFlag,calcOptions);
-			}
-			else
-			{
-				optionsOtim = setGamessOptions(1,ecpFlag,calcOptions);
-				optionsFreq = setGamessOptions(3,ecpFlag,calcOptions);
-			}
-			for (int i = 0; i < naI; i++)
-			{
-				optionsOtim.push_back("na-base.txt");
-				optionsFreq.push_back("na-base.txt");
-			}
-			for (int i = 0; i < liI; i++)
-			{
-				optionsOtim.push_back("li-base.txt");
-				optionsFreq.push_back("li-base.txt");
-			}
-			optionsOtim.push_back("EndOfBasis");
-			optionsFreq.push_back("EndOfBasis");
-			optionsOtim.push_back("ActivateEcp");
-			optionsFreq.push_back("ActivateEcp");
-			for (int i = 0; i < naI; i++)
-			{
-				optionsOtim.push_back("na-ecp.txt");
-				optionsFreq.push_back("na-ecp.txt");
-			}
-			for (int i = 0; i < liI; i++)
-			{
-				optionsOtim.push_back("li-ecp.txt");
-				optionsFreq.push_back("li-ecp.txt");
-			}
-			optionsOtim.push_back("EndOfEcp");
-			optionsFreq.push_back("EndOfEcp");
-			string projectName;
-			string naNumber, liNumber;
-			stringstream convert;
-			convert << naI << "  " << liI;
-			convert >> naNumber >> liNumber;
-			projectName = "na-" + naNumber + "-li-" + liNumber + "-ver-";
-			optionsOtim[1] = projectName;
-			optionsFreq[1] = projectName;
-
-			WriteQuantumInput writeInput_(optionsOtim);
-			string inputName = writeInput_.createInput(mol);
-			if(inputName == "") continue;
-			system((removeScr + inputName + ".dat").c_str());
-			system((gamessPath + inputName + ".inp" + " 00 " + nProc + "  >  " + inputName + ".out").c_str());
-			ReadQuantumOutput readO1_("gamess");
-			readO1_.readOutput(inputName);
-			vector<CoordXYZ> mol1 = readO1_.getCoordinates();
-
-			WriteQuantumInput writeInput2_(optionsOtim);
-			string inputName2 = writeInput2_.createInput(mol1, 1);
-			if(inputName2 == "") continue;
-			system((removeScr + inputName2 + ".dat").c_str());
-			system((gamessPath + inputName2 + ".inp" + " 00 " + nProc + "  >  " + inputName2 + ".out").c_str());
-			ReadQuantumOutput readO2_("gamess");
-			readO2_.readOutput(inputName2);
-			vector<CoordXYZ> mol2 = readO2_.getCoordinates();
-
-			WriteQuantumInput writeInput3_(optionsFreq);
-			string inputName3 = writeInput3_.createInput(mol2, 2);
-			if(inputName3 == "") continue;
-			system((removeScr + inputName3 + ".dat").c_str());
-			system((gamessPath + inputName3 + ".inp" + " 00 " + nProc + "  >  " + inputName3 + ".out").c_str());
-			ReadQuantumOutput readO3_("gamess");
-			readO3_.readOutput(inputName3);
-			double freq = readO3_.getFirstFrequency();
-
-			freqFile_ << "na:  " << naI << "  li:  " << liI << "  freq:  " << freq << endl;
-		}
-	}
-	freqFile_.close();
-}
-
-
 void GamessCalcFrequency::runXyzToGamess(string gamessPath, string scrPath, string nProc, int naI, int liI, string projectName)
 {
 	vector<int> structuresDone;
@@ -141,7 +27,7 @@ void GamessCalcFrequency::runXyzToGamess(string gamessPath, string scrPath, stri
 	bool ecpFlag;
 
 	ecpFlag = !((naI == 0) || (calcOptions[0] == "noecp"));
-	vector<CoordXYZ> mol = readCoordinates(naI, liI);
+	vector<CoordXYZ> mol = readCoordinates(naI, liI, projectName);
 	vector<string> optionsOtim;
 	vector<string> optionsFreq;
 	if (((naI + liI) % 2) == 0)
@@ -210,14 +96,13 @@ void GamessCalcFrequency::runXyzToGamess(string gamessPath, string scrPath, stri
 	freqFile_.close();
 }
 
-vector<CoordXYZ> GamessCalcFrequency::readCoordinates(int naI, int liI)
+vector<CoordXYZ> GamessCalcFrequency::readCoordinates(int naI, int liI, string xyzName)
 {
-	string xyzName;
-	string naNumber, liNumber;
-	stringstream convert;
-	convert << naI << "  " << liI;
-	convert >> naNumber >> liNumber;
-	xyzName = "na" + naNumber + "li" + liNumber + ".xyz";
+	//string xyzName;
+	//string naNumber, liNumber;
+	//stringstream convert;
+	//convert << naI << "  " << liI;
+	//convert >> naNumber >> liNumber;
 
 	ifstream readXyz_(xyzName.c_str());
 	vector<CoordXYZ> mol(naI + liI);

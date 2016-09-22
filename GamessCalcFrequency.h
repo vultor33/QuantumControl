@@ -21,7 +21,7 @@ public:
 	void runXyzToGamess(std::string gamessPath, std::string scrPath, std::string nProc, int naI, int liI, std::string projectName);
 
 private:
-	std::vector<CoordXYZ> readCoordinates(int naI, int liI);
+	std::vector<CoordXYZ> readCoordinates(int naI, int liI, std::string xyzName);
 
 	double readXyzEnergy(std::string name);
 

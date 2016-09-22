@@ -92,6 +92,8 @@ void ReadQuantumOutput::readOutput(string outName)
 	quantumOut_.open(name.c_str());
 
 	string auxline;
+	getline(quantumOut_, auxline);
+
 	while (getline(quantumOut_, auxline))
 	{
 		if (auxline == "")
