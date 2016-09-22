@@ -13,11 +13,12 @@ public:
 	
 	GamessCalcFrequency(std::string gamessPath, std::string scrPath, std::string nProc);
 	
-	GamessCalcFrequency() {}
+	GamessCalcFrequency();
 	
 	void getLowestEnergyFromXyzFile(std::vector<std::string> & filenames, std::string lowEnergyFileName, std::ofstream & allEnergies);
 	// ofstream need header and - allEnergies.open("xxx.xxx", std::ios_base::app);
 
+	void runXyzToGamess(std::string gamessPath, std::string scrPath, std::string nProc, int naI, int liI, std::string projectName);
 
 private:
 	std::vector<CoordXYZ> readCoordinates(int naI, int liI);

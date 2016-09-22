@@ -1,6 +1,8 @@
 #include <iostream>
 #include <vector>
 #include <fstream>
+#include <string>
+#include <sstream>
 
 #include "ControlMopac.h"
 #include "ReadQuantumOutput.h"
@@ -12,9 +14,24 @@
 
 using namespace std;
 
-int main()
+int main(int argc, char *argv[])
 {
-        GamessCalcFrequency gcalc("/programas/gamess/rungms "," /scr/ "," 8 ");
+	string inputName;
+	int naI, liI;
+	if (argc == 0)
+		GamessCalcFrequency gcalc("/home/vultor/gamess/rungms "," /scr/ "," 1 ");
+	else
+	{
+		inputName = argv[1];
+		stringstream convert1, convert2;
+		convert1 << argv[2];
+		convert2 << argv[3];
+		convert1 >> naI;
+		convert2 >> liI;
+	}
+        
+	GamessCalcFrequency gcalc_;
+	gcalc_.runXyzToGamess("/home/vultor/gamess/rungms "," /scr/ "," 1 ", naI, liI, inputName);
 
 	return 0;
 }
