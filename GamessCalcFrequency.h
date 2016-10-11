@@ -11,7 +11,7 @@ class GamessCalcFrequency
 public:
 	~GamessCalcFrequency();
 	
-	GamessCalcFrequency(std::string gamessPath, std::string scrPath, std::string nProc);
+//	APAGAR - GamessCalcFrequency(std::string gamessPath, std::string scrPath, std::string nProc);
 	
 	GamessCalcFrequency();
 	
